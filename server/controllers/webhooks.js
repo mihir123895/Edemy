@@ -21,7 +21,7 @@ export const clerkWebhooks = async (req, res) => {
         if (data && data.id && data.email_address && data.first_name && data.last_name) {
           const userData = {
             _id: data.id,
-            email: data.email_address[0].email_address,
+            email: data.email_addresses[0].email_address,
             name: `${data.first_name} ${data.last_name}`,
             imageUrl: data.image_url || null, // Handle missing image_url gracefully
           };
@@ -39,7 +39,7 @@ export const clerkWebhooks = async (req, res) => {
         // Check if necessary data exists before processing
         if (data && data.id && data.email_address && data.first_name && data.last_name) {
           const userData = {
-            email: data.email_address[0].email_address,
+            email: data.email_addresses[0].email_address,
             name: `${data.first_name} ${data.last_name}`,
             imageUrl: data.image_url || null, // Handle missing image_url gracefully
           };
