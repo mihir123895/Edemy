@@ -86,6 +86,9 @@ export const purchaseCourse = async(req,res) =>{
             }
         })
 
+        userData.enrolledCourses.push(courseData._id);  // Add the course ID to the enrolled courses list
+await userData.save(); 
+
         res.json({success:true,session_url:session.url})
         
     } catch (error) {
@@ -116,6 +119,8 @@ export const updateUserCourseProgress = async (req,res) =>{
                 lectureCompleted:[lectureId]
             })
         }
+
+    
 
         res.json({success:true,message:"Process Updated"})
         

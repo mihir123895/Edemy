@@ -113,29 +113,29 @@ export const educatorDashboardData = async (req,res) =>{
 }
 
 //get enrolled students data with Purchase data
-export const getEnrolledStudentsData = async(req,res) =>{
+export const getEnrolledStudentsData = async (req, res) => {
     try {
-
-        const educator = req.auth.userId;
-        const courses = await Course.find({educator});
-        const courseIds = courses.map(course => course._id);
-
-
-        const purchases = await Purchase.find({
-            courseId:{$in: courseIds},
-            status:'completed'
-        }).populate('userid','name imageUrl').populate('courseId','courseTitle')
-
-        const enrolledStudents = purchases.map((purchase => ({
-            student: purchase.userid,
-            courseTitle:purchase.courseId.courseTitle,
-            purchaseDate:purchase.createdAt
-        })))
-
-        res.json({success:true,enrolledStudents})
-        
+      const educator = req.auth.userId;
+      const courses = await Course.find({ educator });
+      const courseIds = courses.map(course => course._id);
+  
+      const purchases = await Purchase.find({
+        courseId: { $in: courseIds },
+        status: 'completed'
+      })
+        .populate('userId', 'name imageUrl')  // Now userId can be populated correctly
+        .populate('courseId', 'courseTitle');
+      
+  
+      const enrolledStudents = purchases.map((purchase) => ({
+        student: purchase.userId,  // 'userId' is the populated field
+        courseTitle: purchase.courseId.courseTitle,
+        purchaseDate: purchase.createdAt
+      }));
+  
+      res.json({ success: true, enrolledStudents });
     } catch (error) {
-        res.json({success:false,message:error.message})
-        
+      res.json({ success: false, message: error.message });
     }
-}
+  };
+  
